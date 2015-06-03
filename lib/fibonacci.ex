@@ -1,14 +1,11 @@
 defmodule Fibonacci do
   use Application
 
-  # See http://elixir-lang.org/docs/stable/elixir/Application.html
-  # for more information on OTP Applications
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
     children = [
-      # Define workers and child supervisors to be supervised
-      # worker(Fibonacci.Worker, [arg1, arg2, arg3])
+      worker(Fibonacci.Server, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -16,4 +13,7 @@ defmodule Fibonacci do
     opts = [strategy: :one_for_one, name: Fibonacci.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  def next, do: Fibonacci.Server.next
+  def crash!, do: Fibonacci.Server.crash!
 end
